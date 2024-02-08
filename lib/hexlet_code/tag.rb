@@ -3,27 +3,18 @@
 module HexletCode
   class Tag
     class << self
-      def build(tagname, attributes = {})
-        tags = tags_hash(tagname)
-        attributes_array = attributes.each_with_object([]) { |(key, value), acc| acc << "#{key}=\"#{value}\"" }
-        attributes_array.unshift('') if attributes_array.any?
-        head_tag_with_options = "<#{tags[:head]}#{attributes_array.join(' ')}>"
-        body = yield if block_given?
+      def build(tag, options = {})
+        attributes = options.reduce([]) { |acc, (key, value)| acc << "#{key}='#{value}'" }.unshift('').join(' ')
+        tail_tag = single_tag?(tag) ? nil : "</#{tag}>"
+        body = yield if block_given? && tail_tag
 
-        "#{head_tag_with_options}#{body}#{tags[:tail]}"
+        "<#{tag}#{attributes}>#{body}#{tail_tag}"
       end
 
       private
 
-      def single_tags
-        %w[br hr img]
-      end
-
-      def tags_hash(tagname)
-        downcased_tag = tagname.to_s.downcase
-        tail_tag = single_tags.include?(downcased_tag) ? '' : "</#{downcased_tag}>"
-
-        { head: downcased_tag, tail: tail_tag }
+      def single_tag?(tag)
+        %w[br hr img].include?(tag.downcase)
       end
     end
   end
