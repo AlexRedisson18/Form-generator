@@ -39,7 +39,7 @@ module HexletCode
       @nested_tags << Tag.build('textarea', name: attribute, **options.except(:as)) { value }
     end
 
-    def submit(value = 'save')
+    def submit(value = 'Save')
       @submit_tag = Tag.build('input', type: 'submit', value: value)
     end
 

@@ -28,13 +28,13 @@ class TestHexletCode < Minitest::Test
     expected_result = "<form action='#' method='post'>" \
                       "<label for='name'>Name</label>" \
                       "<input name='name' type='text' value='John'>" \
-                      "<input type='submit' value='save'>" \
+                      "<input type='submit' value='Save'>" \
                       '</form>'
 
     assert_equal(result, expected_result)
   end
 
-  def test_form_for_return_form_with_input_and_submit_with_url_and_method
+  def test_form_for_return_form_with_attributes
     result = HexletCode.form_for @user, url: '/users', method: 'delete' do |f|
       f.input :name
       f.submit
@@ -42,7 +42,7 @@ class TestHexletCode < Minitest::Test
     expected_result = "<form action='/users' method='delete'>" \
                       "<label for='name'>Name</label>" \
                       "<input name='name' type='text' value='John'>" \
-                      "<input type='submit' value='save'>" \
+                      "<input type='submit' value='Save'>" \
                       '</form>'
 
     assert_equal(result, expected_result)
@@ -56,7 +56,21 @@ class TestHexletCode < Minitest::Test
     expected_result = "<form action='#' method='post'>" \
                       "<label for='name'>Name</label>" \
                       "<textarea name='name' cols='20' rows='40'>John</textarea>" \
-                      "<input type='submit' value='save'>" \
+                      "<input type='submit' value='Save'>" \
+                      '</form>'
+
+    assert_equal(result, expected_result)
+  end
+
+  def test_form_for_return_form_renamed_submit
+    result = HexletCode.form_for @user do |f|
+      f.input :name
+      f.submit 'SUBMIT'
+    end
+    expected_result = "<form action='#' method='post'>" \
+                      "<label for='name'>Name</label>" \
+                      "<input name='name' type='text' value='John'>" \
+                      "<input type='submit' value='SUBMIT'>" \
                       '</form>'
 
     assert_equal(result, expected_result)
