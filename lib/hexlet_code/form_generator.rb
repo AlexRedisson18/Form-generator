@@ -30,7 +30,7 @@ module HexletCode
     end
 
     def add_input(attribute, value, options)
-      @nested_tags << Tag.build('input', name: attribute, type: 'text', value: value, **options)
+      @nested_tags << Tag.build('input', name: attribute, type: 'text', value:, **options)
     end
 
     def add_textarea(attribute, value, options)
@@ -40,7 +40,7 @@ module HexletCode
     end
 
     def submit(value = 'Save')
-      @submit_tag = Tag.build('input', type: 'submit', value: value)
+      @submit_tag = Tag.build('input', type: 'submit', value:)
     end
 
     def prepare_form_options
