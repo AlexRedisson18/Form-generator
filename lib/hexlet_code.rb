@@ -3,5 +3,10 @@
 require_relative 'hexlet_code/version'
 
 module HexletCode
-  autoload :Tag, './hexlet_code/tag'
+  autoload :Tag, 'hexlet_code/tag'
+  autoload :FormGenerator, 'hexlet_code/form_generator'
+
+  def self.form_for(user, options = {})
+    FormGenerator.build(user, options)
+  end
 end
