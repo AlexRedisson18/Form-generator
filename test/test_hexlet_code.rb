@@ -6,23 +6,58 @@ class TestHexletCode < Minitest::Test
   User = Struct.new(:name, :job, keyword_init: true)
 
   def setup
-    @user = User.new(name: 'John')
+    @user = User.new(name: 'John', job: 'driver')
   end
 
   def test_that_it_has_a_version_number
     assert_equal ::HexletCode::VERSION, '0.1.0'
   end
 
-  def test_should_return_correct_form_tag
+  def test_form_for_return_empty_form
     result = HexletCode.form_for @user
     expected_result = "<form action='#' method='post'></form>"
 
     assert_equal(result, expected_result)
   end
 
-  def test_should_return_correct_form_tag_with_url
-    result = HexletCode.form_for @user, url: '/users'
-    expected_result = "<form action='/users' method='post'></form>"
+  def test_form_for_return_form_with_input_and_submit_and_default_url_method
+    result = HexletCode.form_for @user do |f|
+      f.input :name
+      f.submit
+    end
+    expected_result = "<form action='#' method='post'>" \
+                      "<label for='name'>Name</label>" \
+                      "<input name='name' type='text' value='John'>" \
+                      "<input type='submit' value='save'>" \
+                      '</form>'
+
+    assert_equal(result, expected_result)
+  end
+
+  def test_form_for_return_form_with_input_and_submit_with_url_and_method
+    result = HexletCode.form_for @user, url: '/users', method: 'delete' do |f|
+      f.input :name
+      f.submit
+    end
+    expected_result = "<form action='/users' method='delete'>" \
+                      "<label for='name'>Name</label>" \
+                      "<input name='name' type='text' value='John'>" \
+                      "<input type='submit' value='save'>" \
+                      '</form>'
+
+    assert_equal(result, expected_result)
+  end
+
+  def test_form_for_return_form_with_textarea
+    result = HexletCode.form_for @user do |f|
+      f.input :name, as: :text
+      f.submit
+    end
+    expected_result = "<form action='#' method='post'>" \
+                      "<label for='name'>Name</label>" \
+                      "<textarea name='name' cols='20' rows='40'>John</textarea>" \
+                      "<input type='submit' value='save'>" \
+                      '</form>'
 
     assert_equal(result, expected_result)
   end

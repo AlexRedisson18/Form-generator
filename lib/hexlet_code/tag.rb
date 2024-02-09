@@ -14,7 +14,7 @@ module HexletCode
       private
 
       def single_tag?(tag)
-        %w[br hr img].include?(tag.downcase)
+        %w[br hr img input].include?(tag.downcase)
       end
     end
   end
