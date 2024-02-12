@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
 module HexletCode
+  autoload(:Label, 'hexlet_code/label.rb')
+  autoload(:Input, 'hexlet_code/input.rb')
+  autoload(:Textarea, 'hexlet_code/textarea.rb')
+  autoload(:Submit, 'hexlet_code/submit.rb')
+
   class FormGenerator
+    attr_reader :form_options, :nested_tags, :submit_tag
+
     def initialize(model, form_options)
       @model = model
       @form_options = form_options
       @nested_tags = []
-      @submit_tag = ''
-    end
-
-    def build
-      prepare_form_options
-      Tag.build('form', @form_options) { (@nested_tags << @submit_tag).join }
+      @submit_tag = nil
     end
 
     def input(attribute, options = {})
@@ -26,27 +28,19 @@ module HexletCode
     end
 
     def add_label(attribute)
-      @nested_tags << Tag.build('label', for: attribute) { attribute.capitalize }
+      @nested_tags << Label.new(attribute)
     end
 
     def add_input(attribute, value, options)
-      @nested_tags << Tag.build('input', name: attribute, type: 'text', value:, **options)
+      @nested_tags << Input.new(attribute, value, **options)
     end
 
     def add_textarea(attribute, value, options)
-      options[:cols] ||= 20
-      options[:rows] ||= 40
-      @nested_tags << Tag.build('textarea', name: attribute, **options.except(:as)) { value }
+      @nested_tags << Textarea.new(attribute, value, **options)
     end
 
     def submit(value = 'Save')
-      @submit_tag = Tag.build('input', type: 'submit', value:)
-    end
-
-    def prepare_form_options
-      @form_options[:action] = @form_options.delete(:url) || '#'
-      @form_options[:method] ||= 'post'
-      @form_options = @form_options.sort.to_h
+      @submit_tag = Submit.new(value)
     end
   end
 end
