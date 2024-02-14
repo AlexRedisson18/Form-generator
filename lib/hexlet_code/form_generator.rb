@@ -28,7 +28,7 @@ module HexletCode
     end
 
     def add_tag(tagname, attribute = '', value = '', options = {})
-      class_name = "HexletCode::#{tagname.capitalize}".constantize
+      class_name = HexletCode.const_get(tagname.capitalize)
       @nested_tags << class_name.new(attribute, value, **options)
     end
   end
