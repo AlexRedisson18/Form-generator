@@ -18,29 +18,18 @@ module HexletCode
 
     def input(attribute, options = {})
       value = @model.public_send(attribute)
-      add_label(attribute)
-
-      if options[:as].to_s == 'text'
-        add_textarea(attribute, value, options)
-      else
-        add_input(attribute, value, options)
-      end
-    end
-
-    def add_label(attribute)
-      @nested_tags << Label.new(attribute)
-    end
-
-    def add_input(attribute, value, options)
-      @nested_tags << Input.new(attribute, value, **options)
-    end
-
-    def add_textarea(attribute, value, options)
-      @nested_tags << Textarea.new(attribute, value, **options)
+      add_tag('label', attribute)
+      input_tag_name = options[:as].to_s == 'text' ? 'textarea' : 'input'
+      add_tag(input_tag_name, attribute, value, options)
     end
 
     def submit(value = 'Save')
       @submit_tag = Submit.new(value)
+    end
+
+    def add_tag(tagname, attribute = '', value = '', options = {})
+      class_name = "HexletCode::#{tagname.capitalize}".constantize
+      @nested_tags << class_name.new(attribute, value, **options)
     end
   end
 end

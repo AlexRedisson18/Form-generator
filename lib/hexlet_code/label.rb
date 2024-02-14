@@ -2,7 +2,7 @@
 
 module HexletCode
   class Label
-    def initialize(attribute)
+    def initialize(attribute, _value = '', _options = {})
       @attribute = attribute
     end
 

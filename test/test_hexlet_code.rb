@@ -15,9 +15,8 @@ class TestHexletCode < Minitest::Test
 
   def test_form_for_return_empty_form
     result = HexletCode.form_for @user
-    expected_result = load_fixture("#{__method__}.html").gsub("\n", '')
 
-    assert_equal(result, expected_result)
+    assert_equal(result, expected_result(__method__))
   end
 
   def test_form_for_return_simple_form_with_default_attributes
@@ -25,9 +24,8 @@ class TestHexletCode < Minitest::Test
       f.input :name
       f.submit
     end
-    expected_result = load_fixture("#{__method__}.html").gsub("\n", '')
 
-    assert_equal(result, expected_result)
+    assert_equal(result, expected_result(__method__))
   end
 
   def test_form_for_return_simple_form_with_attributes
@@ -35,9 +33,8 @@ class TestHexletCode < Minitest::Test
       f.input :name
       f.submit
     end
-    expected_result = load_fixture("#{__method__}.html").gsub("\n", '')
 
-    assert_equal(result, expected_result)
+    assert_equal(result, expected_result(__method__))
   end
 
   def test_form_for_return_form_with_textarea
@@ -45,9 +42,8 @@ class TestHexletCode < Minitest::Test
       f.input :name, as: :text
       f.submit
     end
-    expected_result = load_fixture("#{__method__}.html").gsub("\n", '')
 
-    assert_equal(result, expected_result)
+    assert_equal(result, expected_result(__method__))
   end
 
   def test_form_for_return_form_renamed_submit
@@ -55,8 +51,7 @@ class TestHexletCode < Minitest::Test
       f.input :name
       f.submit 'SUBMIT'
     end
-    expected_result = load_fixture("#{__method__}.html").gsub("\n", '')
 
-    assert_equal(result, expected_result)
+    assert_equal(result, expected_result(__method__))
   end
 end
