@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-module HexletCode
-  autoload(:Label, 'hexlet_code/label.rb')
-  autoload(:Input, 'hexlet_code/input.rb')
-  autoload(:Textarea, 'hexlet_code/textarea.rb')
-  autoload(:Submit, 'hexlet_code/submit.rb')
+require 'hexlet_code/tags/label'
+require 'hexlet_code/tags/input'
+require 'hexlet_code/tags/textarea'
+require 'hexlet_code/tags/submit'
 
+module HexletCode
   class FormGenerator
     attr_reader :form_options, :nested_tags, :submit_tag
 
@@ -19,17 +19,27 @@ module HexletCode
     def input(attribute, options = {})
       value = @model.public_send(attribute)
       add_tag('label', attribute)
-      input_tag_name = options[:as].to_s == 'text' ? 'textarea' : 'input'
-      add_tag(input_tag_name, attribute, value, options)
+
+      tag_type = input_type(options.fetch(:as, 'input'))
+      add_tag(tag_type, attribute, value, options)
     end
 
     def submit(value = 'Save')
-      @submit_tag = Submit.new(value)
+      @submit_tag = HexletCode::Tags::Submit.new(value)
     end
 
     def add_tag(tagname, attribute = '', value = '', options = {})
-      class_name = HexletCode.const_get(tagname.capitalize)
+      class_name = Object.const_get("HexletCode::Tags::#{tagname.capitalize}")
       @nested_tags << class_name.new(attribute, value, **options)
+    end
+
+    def input_type(type)
+      case type.to_s
+      when 'text'
+        'textarea'
+      else
+        'input'
+      end
     end
   end
 end
