@@ -2,7 +2,7 @@
 
 module HexletCode
   module Tags
-    class Textarea
+    class Text
       def initialize(attribute, value, options = {})
         @attribute = attribute
         @value = value
