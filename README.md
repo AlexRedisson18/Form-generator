@@ -4,7 +4,7 @@
 
 ### Usage
 
-Create class with required fields
+Create class with required fields.
 Then create inctance of the class with attributes
 
 ```ruby
