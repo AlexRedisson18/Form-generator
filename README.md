@@ -5,7 +5,7 @@
 ### Usage
 
 Create class with required fields
-Then create inctance of the class with attributes
+Then create inctance of the class with attributes.
 
 ```ruby
 User = Struct.new(:name, :job)
